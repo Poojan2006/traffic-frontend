@@ -38,47 +38,70 @@ const Login = () => {
 
     return (
         <div className="auth-container" style={{
-            background: 'linear-gradient(135deg, #0b1128 0%, #060913 100%)',
+            background: 'linear-gradient(135deg, #0b1128 0%, #05070e 100%)',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem'
         }}>
             {/* Soft Ambient Lights */}
-            <div style={{ position: 'absolute', top: '-15%', left: '-10%', width: '50%', height: '50%', background: 'radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }}></div>
-            <div style={{ position: 'absolute', bottom: '-20%', right: '-15%', width: '60%', height: '60%', background: 'radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%)', filter: 'blur(80px)' }}></div>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 60%)', filter: 'blur(60px)' }}></div>
+            <div style={{ position: 'absolute', bottom: 0, right: 0, width: '100%', height: '100%', background: 'radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.06) 0%, transparent 60%)', filter: 'blur(80px)' }}></div>
 
-            <div className="auth-card" style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '440px', padding: '0 1rem' }}>
-                {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                maxWidth: '1200px',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '4rem',
+                zIndex: 10
+            }}>
+                {/* Left Description Area */}
+                <div style={{ 
+                    flex: '1 1 450px', 
+                    padding: '2rem 1rem',
+                }}>
                     <div
                         style={{
-                            width: 64,
-                            height: 64,
+                            width: 68, height: 68,
                             background: 'rgba(255, 255, 255, 0.03)',
                             border: '1px solid rgba(255, 255, 255, 0.08)',
                             borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '2.2rem',
-                            margin: '0 auto 1.5rem',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: '2.5rem', marginBottom: '1.5rem',
                             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
                         }}
-                    >
-                        🚦
-                    </div>
+                    >🚦</div>
                     <h1 style={{ 
-                        fontSize: '2.2rem', 
-                        fontWeight: 700,
+                        fontSize: '3.5rem', 
+                        fontWeight: 800,
                         color: '#f8fafc',
+                        lineHeight: 1.1,
                         letterSpacing: '-0.02em',
-                        marginBottom: '0.4rem'
+                        marginBottom: '1.2rem'
                     }}>
-                        Trivo Platform
+                        Empowering <br />
+                        <span style={{ 
+                            background: 'linear-gradient(to right, #60a5fa, #818cf8)', 
+                            WebkitBackgroundClip: 'text', 
+                            WebkitTextFillColor: 'transparent' 
+                        }}>Smart Traffic</span>
                     </h1>
-                    <p style={{ color: '#94a3b8', fontSize: '1rem', fontWeight: 400 }}>
-                        Traffic Management System
+                    <p style={{ color: '#94a3b8', fontSize: '1.15rem', lineHeight: 1.6, maxWidth: '460px' }}>
+                        Trivo Platform brings police, civilians, and administrators into one unified ecosystem for safer, faster, and more intelligent traffic rule enforcement.
                     </p>
                 </div>
+
+                {/* Right Login Box */}
+                <div className="auth-card" style={{ 
+                    flex: '1 1 400px', 
+                    maxWidth: '440px' 
+                }}>
 
                 {/* Login Form */}
                 <div className="glass-card">
@@ -230,6 +253,7 @@ const Login = () => {
                         Register
                     </Link>
                 </p>
+            </div>
             </div>
         </div>
     );
