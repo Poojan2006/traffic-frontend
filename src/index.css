@@ -385,6 +385,16 @@ select option { background: var(--bg-card); }
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
+@keyframes driveRight {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes driveLeft {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
