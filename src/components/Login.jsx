@@ -38,50 +38,51 @@ const Login = () => {
 
     return (
         <div className="auth-container" style={{
-            background: 'var(--bg)',
+            background: '#090a0f',
             backgroundImage: `
-                radial-gradient(circle at 15% 50%, rgba(79, 110, 247, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(159, 70, 228, 0.15), transparent 25%)
+                linear-gradient(rgba(255, 183, 3, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 183, 3, 0.03) 1px, transparent 1px)
             `,
+            backgroundSize: '40px 40px',
             position: 'relative',
             overflow: 'hidden'
         }}>
-            {/* Animated Glowing Orbs */}
-            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(79, 110, 247, 0.2)', filter: 'blur(100px)', borderRadius: '50%', animation: 'float 6s ease-in-out infinite' }}></div>
-            <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(159, 70, 228, 0.2)', filter: 'blur(100px)', borderRadius: '50%', animation: 'float 8s ease-in-out infinite reverse' }}></div>
+            {/* Animated Car Light Trails */}
+            <div style={{ position: 'absolute', top: '20%', left: '-20%', width: '140%', height: '2px', background: 'linear-gradient(90deg, transparent, #ffb703, #ff4d4d, transparent)', filter: 'blur(2px)', opacity: 0.6, animation: 'driveRight 6s linear infinite' }}></div>
+            <div style={{ position: 'absolute', bottom: '30%', right: '-20%', width: '140%', height: '2px', background: 'linear-gradient(-90deg, transparent, #00f0ff, transparent)', filter: 'blur(2px)', opacity: 0.6, animation: 'driveLeft 8s linear infinite 2s' }}></div>
 
             <div className="auth-card" style={{ position: 'relative', zIndex: 10 }}>
                 {/* Header */}
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                     <div
                         style={{
-                            width: 48,
-                            height: 48,
-                            background: 'linear-gradient(135deg, var(--primary), #8330c8)',
-                            borderRadius: '12px',
+                            width: 56,
+                            height: 56,
+                            background: 'rgba(255, 183, 3, 0.1)',
+                            border: '1px solid rgba(255, 183, 3, 0.4)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '1.5rem',
-                            margin: '0 auto 1.25rem',
-                            boxShadow: '0 8px 16px rgba(79, 110, 247, 0.25)',
-                            transform: 'rotate(-5deg)',
+                            fontSize: '1.8rem',
+                            margin: '0 auto 1.5rem',
+                            boxShadow: '0 0 20px rgba(255, 183, 3, 0.2)',
+                            clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
                         }}
                     >
-                        🚦
+                        ⚡
                     </div>
                     <h1 style={{ 
-                        fontSize: '1.8rem', 
-                        fontWeight: 800,
-                        background: 'linear-gradient(to right, #ffffff, #a0a5b8)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
+                        fontSize: '2rem', 
+                        fontWeight: 900,
+                        color: '#fff',
+                        letterSpacing: '1px',
+                        textShadow: '0 0 20px rgba(255,183,3,0.3)',
                         marginBottom: '0.2rem'
                     }}>
-                        Welcome to Trivo
+                        TRIVO <span style={{ color: '#ffb703' }}>NEXUS</span>
                     </h1>
                     <p style={{ color: 'var(--text-sub)', fontSize: '0.95rem', fontWeight: 500 }}>
-                        Next-Gen Traffic Management System
+                        Next-Gen Traffic Command
                     </p>
                 </div>
 
