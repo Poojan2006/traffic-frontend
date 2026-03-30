@@ -37,28 +37,51 @@ const Login = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
+        <div className="auth-container" style={{
+            background: 'var(--bg)',
+            backgroundImage: `
+                radial-gradient(circle at 15% 50%, rgba(79, 110, 247, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(159, 70, 228, 0.15), transparent 25%)
+            `,
+            position: 'relative',
+            overflow: 'hidden'
+        }}>
+            {/* Animated Glowing Orbs */}
+            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(79, 110, 247, 0.2)', filter: 'blur(100px)', borderRadius: '50%', animation: 'float 6s ease-in-out infinite' }}></div>
+            <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(159, 70, 228, 0.2)', filter: 'blur(100px)', borderRadius: '50%', animation: 'float 8s ease-in-out infinite reverse' }}></div>
+
+            <div className="auth-card" style={{ position: 'relative', zIndex: 10 }}>
                 {/* Header */}
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                     <div
                         style={{
-                            width: 40,
-                            height: 40,
-                            background: 'var(--primary)',
-                            borderRadius: 8,
+                            width: 48,
+                            height: 48,
+                            background: 'linear-gradient(135deg, var(--primary), #8330c8)',
+                            borderRadius: '12px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '1.25rem',
+                            fontSize: '1.5rem',
                             margin: '0 auto 1.25rem',
+                            boxShadow: '0 8px 16px rgba(79, 110, 247, 0.25)',
+                            transform: 'rotate(-5deg)',
                         }}
                     >
                         🚦
                     </div>
-                    <h1 style={{ fontSize: '1.6rem', color: 'var(--text)' }}>Sign in to Trivo</h1>
-                    <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', marginTop: '0.35rem' }}>
-                        Traffic Management System
+                    <h1 style={{ 
+                        fontSize: '1.8rem', 
+                        fontWeight: 800,
+                        background: 'linear-gradient(to right, #ffffff, #a0a5b8)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        marginBottom: '0.2rem'
+                    }}>
+                        Welcome to Trivo
+                    </h1>
+                    <p style={{ color: 'var(--text-sub)', fontSize: '0.95rem', fontWeight: 500 }}>
+                        Next-Gen Traffic Management System
                     </p>
                 </div>
 
