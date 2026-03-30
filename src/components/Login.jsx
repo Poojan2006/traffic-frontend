@@ -38,51 +38,45 @@ const Login = () => {
 
     return (
         <div className="auth-container" style={{
-            background: '#090a0f',
-            backgroundImage: `
-                linear-gradient(rgba(255, 183, 3, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 183, 3, 0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px',
+            background: 'linear-gradient(135deg, #0b1128 0%, #060913 100%)',
             position: 'relative',
             overflow: 'hidden'
         }}>
-            {/* Animated Car Light Trails */}
-            <div style={{ position: 'absolute', top: '20%', left: '-20%', width: '140%', height: '2px', background: 'linear-gradient(90deg, transparent, #ffb703, #ff4d4d, transparent)', filter: 'blur(2px)', opacity: 0.6, animation: 'driveRight 6s linear infinite' }}></div>
-            <div style={{ position: 'absolute', bottom: '30%', right: '-20%', width: '140%', height: '2px', background: 'linear-gradient(-90deg, transparent, #00f0ff, transparent)', filter: 'blur(2px)', opacity: 0.6, animation: 'driveLeft 8s linear infinite 2s' }}></div>
+            {/* Soft Ambient Lights */}
+            <div style={{ position: 'absolute', top: '-15%', left: '-10%', width: '50%', height: '50%', background: 'radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }}></div>
+            <div style={{ position: 'absolute', bottom: '-20%', right: '-15%', width: '60%', height: '60%', background: 'radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%)', filter: 'blur(80px)' }}></div>
 
-            <div className="auth-card" style={{ position: 'relative', zIndex: 10 }}>
+            <div className="auth-card" style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '440px', padding: '0 1rem' }}>
                 {/* Header */}
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                     <div
                         style={{
-                            width: 56,
-                            height: 56,
-                            background: 'rgba(255, 183, 3, 0.1)',
-                            border: '1px solid rgba(255, 183, 3, 0.4)',
+                            width: 64,
+                            height: 64,
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            borderRadius: '50%',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '1.8rem',
+                            fontSize: '2.2rem',
                             margin: '0 auto 1.5rem',
-                            boxShadow: '0 0 20px rgba(255, 183, 3, 0.2)',
-                            clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
                         }}
                     >
-                        ⚡
+                        🚦
                     </div>
                     <h1 style={{ 
-                        fontSize: '2rem', 
-                        fontWeight: 900,
-                        color: '#fff',
-                        letterSpacing: '1px',
-                        textShadow: '0 0 20px rgba(255,183,3,0.3)',
-                        marginBottom: '0.2rem'
+                        fontSize: '2.2rem', 
+                        fontWeight: 700,
+                        color: '#f8fafc',
+                        letterSpacing: '-0.02em',
+                        marginBottom: '0.4rem'
                     }}>
-                        TRIVO <span style={{ color: '#ffb703' }}>NEXUS</span>
+                        Trivo Platform
                     </h1>
-                    <p style={{ color: 'var(--text-sub)', fontSize: '0.95rem', fontWeight: 500 }}>
-                        Next-Gen Traffic Command
+                    <p style={{ color: '#94a3b8', fontSize: '1rem', fontWeight: 400 }}>
+                        Traffic Management System
                     </p>
                 </div>
 
@@ -130,7 +124,17 @@ const Login = () => {
                         <button
                             type="submit"
                             className="btn btn-primary"
-                            style={{ width: '100%', marginTop: '0.5rem' }}
+                            style={{ 
+                                width: '100%', 
+                                marginTop: '1rem',
+                                background: 'linear-gradient(to right, #2563eb, #4f46e5)',
+                                border: 'none',
+                                padding: '0.85rem',
+                                borderRadius: '8px',
+                                fontSize: '0.95rem',
+                                fontWeight: 600,
+                                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
+                            }}
                             disabled={loading}
                         >
                             {loading ? 'Signing in...' : 'Sign In'}
