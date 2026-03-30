@@ -66,7 +66,7 @@ const ViolationList = ({ role: propRole, type = 'my', onActionSuccess }) => {
                     {violations.map(v => (
                         <div key={v.id} className="glass-card violation-card">
                             <div className="image-container">
-                                <img src={`http://localhost:8080/api/violations/image/${v.id}`} alt="Evidence" />
+                                <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="Evidence" />
                                 <span className={`status-badge ${v.status.toLowerCase()}`}>{v.status}</span>
                             </div>
 

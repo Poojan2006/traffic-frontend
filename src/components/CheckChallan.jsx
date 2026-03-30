@@ -72,7 +72,7 @@ const CheckChallan = () => {
                     {violations.map(v => (
                         <div key={v.id} className="glass-card" style={{ display: 'flex', gap: '1.25rem', padding: '1.25rem' }}>
                             <div style={{ width: 80, height: 80, borderRadius: 8, overflow: 'hidden', flexShrink: 0, background: 'var(--bg)' }}>
-                                <img src={`http://localhost:8080/api/violations/image/${v.id}`} alt="Evidence"
+                                <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="Evidence"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
                             <div style={{ flex: 1 }}>

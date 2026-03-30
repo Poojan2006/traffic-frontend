@@ -98,7 +98,7 @@ const Dashboard = () => {
                             {violationList.slice(0, 5).map(v => (
                                 <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.85rem', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
                                     <div style={{ width: 48, height: 48, borderRadius: 6, overflow: 'hidden', flexShrink: 0, background: 'var(--bg)' }}>
-                                        <img src={`http://localhost:8080/api/violations/image/${v.id}`} alt="evidence" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="evidence" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     </div>
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <div style={{ fontSize: '0.88rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text)' }}>{v.description}</div>
