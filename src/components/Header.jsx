@@ -44,7 +44,7 @@ const Header = ({ onToggleSidebar }) => {
                     width: 36, height: 36, 
                     borderRadius: '50%', 
                     background: 'var(--accent)', 
-                    display: 'flex', alignItems: 'center', justify-content: 'center',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontWeight: 700, fontSize: '0.875rem', color: 'white'
                 }}>
                     {(user.username || 'U').charAt(0).toUpperCase()}
