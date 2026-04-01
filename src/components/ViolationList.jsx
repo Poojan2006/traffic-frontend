@@ -13,10 +13,9 @@ const ViolationList = ({ role: propRole, type = 'my', onActionSuccess }) => {
 
     const fetchViolations = useCallback(async () => {
         try {
-            // "type=my" fetches user's own reports. But for Police/Admin, "My Issued Fines" should fetch all verified ones in the city
             let endpoint = '/violations/my';
             if (type === 'pending') endpoint = '/violations/pending';
-            else if (role !== 'USER') endpoint = '/violations/issued'; // Police sees all issued fines
+            else if (role !== 'USER') endpoint = '/violations/issued'; 
             
             const res = await API.get(endpoint);
             setViolations(res.data);
@@ -47,44 +46,47 @@ const ViolationList = ({ role: propRole, type = 'my', onActionSuccess }) => {
 
     return (
         <div style={{ animation: 'fadeIn 0.3s ease' }}>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.7rem', fontWeight: 700 }}>
-                    {type === 'pending' ? 'Verify Reports' : (isPolice ? 'My Issued Fines' : 'My Reports')}
-                </h1>
-                <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                    {type === 'pending' ? 'Review incoming civilian reports and issue challans.' : (isPolice ? 'Fines you have successfully verified and issued.' : 'All violations you have reported.')}
+            <div style={{ marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 700 }}>
+                    {type === 'pending' ? 'Verification Queue' : (isPolice ? 'Official Records' : 'My Submission History')}
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', marginTop: '0.5rem' }}>
+                    {type === 'pending' ? 'Review civilian submissions and authorize traffic challans.' : (isPolice ? 'Database of verified violations and issued fines.' : 'Comprehensive list of all violations you have reported to the authorities.')}
                 </p>
             </div>
 
             {violations.length === 0 ? (
-                <div className="glass-card" style={{ textAlign: 'center', padding: '4rem' }}>
-                    <div style={{ fontSize: '2rem', marginBottom: '0.75rem', opacity: 0.3 }}>📂</div>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No records found.</p>
+                <div className="card" style={{ textAlign: 'center', padding: '5rem 2rem' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.15 }}>📂</div>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>No records match your current view.</p>
                 </div>
             ) : (
                 <div className="violation-grid">
                     {violations.map(v => (
-                        <div key={v.id} className="glass-card violation-card">
-                            <div className="image-container">
-                                <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="Evidence" />
-                                <span className={`status-badge ${v.status.toLowerCase()}`}>{v.status}</span>
+                        <div key={v.id} className="card violation-card" style={{ padding: 0, overflow: 'hidden' }}>
+                            <div className="image-container" style={{ height: '220px', position: 'relative' }}>
+                                <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="Evidence" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <span className={`badge badge-${v.status.toLowerCase()}`} style={{ position: 'absolute', top: '1rem', right: '1rem' }}>{v.status}</span>
                             </div>
 
-                            <div style={{ padding: '1.25rem' }}>
-                                <p style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.75rem', lineHeight: 1.4 }}>{v.description}</p>
+                            <div style={{ padding: '1.5rem' }}>
+                                <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem', lineHeight: 1.5, color: 'var(--text-primary)' }}>{v.description}</p>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                                    {v.vehicleNo && (
-                                        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-sub)', letterSpacing: '0.08em' }}>🚗 {v.vehicleNo}</span>
-                                    )}
-                                    {v.location && <span>📍 {v.location}</span>}
-                                    <span>📅 {new Date(v.createdAt).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                        <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Vehicle Plate</span>
+                                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>{v.vehicleNo || 'N/A'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                        <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Ticket Date</span>
+                                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>{new Date(v.createdAt).toLocaleDateString()}</span>
+                                    </div>
                                 </div>
 
                                 {v.fineAmount && (
-                                    <div style={{ padding: '0.75rem', background: 'var(--success-dim)', borderRadius: 'var(--radius-sm)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                        <span style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Fine Amount</span>
-                                        <span style={{ fontWeight: 700, color: 'var(--success)' }}>₹{v.fineAmount}</span>
+                                    <div style={{ padding: '1rem', background: 'var(--accent-soft)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
+                                        <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Challan Amount</span>
+                                        <span style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.125rem' }}>₹{v.fineAmount}</span>
                                     </div>
                                 )}
 
@@ -92,44 +94,44 @@ const ViolationList = ({ role: propRole, type = 'my', onActionSuccess }) => {
                                     <button 
                                         onClick={() => generateChallanPDF(v)}
                                         className="btn btn-secondary" 
-                                        style={{ width: '100%', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-                                        <span>📄</span> Download Official Challan
+                                        style={{ width: '100%', padding: '0.75rem', fontSize: '0.875rem' }}>
+                                        <span style={{ marginRight: '0.5rem' }}>📄</span> Download PDF Challan
                                     </button>
                                 )}
 
                                 {isPolice && v.status === 'PENDING' && (
                                     verifyingId === v.id ? (
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', padding: '1.25rem', background: 'var(--bg-main)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
                                             <div className="form-group" style={{ marginBottom: 0 }}>
-                                                <label>Vehicle No.</label>
-                                                <input type="text" placeholder="MH-01-AB-1234"
+                                                <label style={{ fontSize: '0.75rem' }}>Confirmed Vehicle No.</label>
+                                                <input type="text" placeholder="MH-01-XX-0000"
                                                     value={fineDetails.vehicleNo}
                                                     onChange={(e) => setFineDetails({ ...fineDetails, vehicleNo: e.target.value.toUpperCase() })} />
                                             </div>
                                             <div className="form-group" style={{ marginBottom: 0 }}>
-                                                <label>Fine Amount (₹)</label>
-                                                <input type="number" placeholder="1000"
+                                                <label style={{ fontSize: '0.75rem' }}>Fine Amount (INR)</label>
+                                                <input type="number" placeholder="500"
                                                     value={fineDetails.fineAmount}
                                                     onChange={(e) => setFineDetails({ ...fineDetails, fineAmount: e.target.value })} />
                                             </div>
-                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                <button onClick={() => handleVerify(v.id, 'APPROVE')} className="btn btn-primary" style={{ flex: 1, fontSize: '0.85rem' }}
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                                                <button onClick={() => handleVerify(v.id, 'APPROVE')} className="btn btn-primary" style={{ padding: '0.6rem', fontSize: '0.8125rem' }}
                                                     disabled={!fineDetails.fineAmount || !fineDetails.vehicleNo}>
-                                                    Issue Challan
+                                                    Approve
                                                 </button>
                                                 <button onClick={() => handleVerify(v.id, 'REJECT')} className="btn btn-secondary"
-                                                    style={{ flex: 1, fontSize: '0.85rem', color: 'var(--danger)', borderColor: 'rgba(224,82,82,0.3)' }}>
+                                                    style={{ padding: '0.6rem', fontSize: '0.8125rem', color: 'var(--danger)', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
                                                     Reject
                                                 </button>
                                             </div>
-                                            <button onClick={() => setVerifyingId(null)} className="btn btn-secondary" style={{ width: '100%', fontSize: '0.8rem' }}>
+                                            <button onClick={() => setVerifyingId(null)} className="btn btn-secondary" style={{ width: '100%', fontSize: '0.75rem', padding: '0.5rem' }}>
                                                 Cancel
                                             </button>
                                         </div>
                                     ) : (
                                         <button onClick={() => { setVerifyingId(v.id); setFineDetails({ fineAmount: '', vehicleNo: v.vehicleNo || '' }); }}
-                                            className="btn btn-primary" style={{ width: '100%', fontSize: '0.85rem' }}>
-                                            Process Violation
+                                            className="btn btn-primary" style={{ width: '100%', padding: '0.875rem' }}>
+                                            Process Submission
                                         </button>
                                     )
                                 )}

@@ -65,93 +65,155 @@ const IssueFine = () => {
 
     if (success) {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1.25rem', animation: 'fadeIn 0.3s ease' }}>
-                <div style={{ width: 56, height: 56, background: 'var(--success-dim)', border: '1px solid var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✓</div>
-                <h2 style={{ fontSize: '1.4rem' }}>Fine Issued</h2>
-                <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem' }}>Case for <strong style={{ color: 'var(--text)' }}>{form.vehicleNo}</strong> has been recorded.</p>
-                <div style={{ display: 'flex', gap: '0.75rem' }}>
-                    <button className="btn btn-primary" onClick={() => { setSuccess(false); setForm({ vehicleNo: '', description: '', fineAmount: '', location: '' }); setImage(null); setPreview(null); }}>Issue Another</button>
-                    <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>Dashboard</button>
+            <div style={{ 
+                display: 'flex', flexDirection: 'column', alignItems: 'center', 
+                justifyContent: 'center', minHeight: '60vh', gap: '1.5rem', 
+                animation: 'fadeIn 0.4s ease', textAlign: 'center', maxWidth: '400px', margin: 'auto'
+            }}>
+                <div style={{ 
+                    width: 80, height: 80, background: 'var(--success)', 
+                    color: 'white', borderRadius: '50%', display: 'flex', 
+                    alignItems: 'center', justifyContent: 'center', fontSize: '2rem',
+                    boxShadow: '0 0 30px rgba(16, 185, 129, 0.4)'
+                }}>✓</div>
+                <div>
+                    <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Fine Issued Successfully</h2>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}> Official record for <strong>{form.vehicleNo}</strong> has been created in the database.</p>
+                </div>
+                <div style={{ display: 'flex', gap: '1rem', width: '100%', marginTop: '1rem' }}>
+                    <button className="btn btn-primary" style={{ flex: 1 }} onClick={() => { setSuccess(false); setForm({ vehicleNo: '', description: '', fineAmount: '', location: '' }); setImage(null); setPreview(null); }}>Issue Another</button>
+                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => navigate('/dashboard')}>Finish</button>
                 </div>
             </div>
         );
     }
 
     return (
-        <div style={{ maxWidth: 720, animation: 'fadeIn 0.3s ease' }}>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.7rem', fontWeight: 700 }}>Issue Fine</h1>
-                <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', marginTop: '0.25rem' }}>Document a traffic violation and issue an official challan.</p>
+        <div style={{ maxWidth: 760, animation: 'fadeIn 0.4s ease' }}>
+            <div style={{ marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 700 }}>Issue Official Fine</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', marginTop: '0.5rem' }}>
+                    Document a traffic violation and issue an official challan with documented evidence.
+                </p>
             </div>
 
             <form onSubmit={handleSubmit}>
-                <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-
-                    <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label>Vehicle Registration No.</label>
-                        <input type="text" name="vehicleNo" placeholder="KA-01-AB-1234" value={form.vehicleNo}
-                            onChange={handleChange} required style={{ letterSpacing: '0.06em', fontWeight: 600 }} />
+                <div className="card">
+                    {/* Core Identification */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label>Vehicle Registration No.</label>
+                            <input 
+                                type="text" 
+                                name="vehicleNo" 
+                                placeholder="KA-00-XX-0000" 
+                                value={form.vehicleNo}
+                                onChange={handleChange} 
+                                required 
+                                style={{ letterSpacing: '0.05em', fontWeight: 700, fontSize: '1rem' }} 
+                            />
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label>Fine Amount (₹)</label>
+                            <input 
+                                type="number" 
+                                name="fineAmount" 
+                                placeholder="1000" 
+                                value={form.fineAmount}
+                                onChange={handleChange} 
+                                required 
+                                min="1" 
+                                style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--accent)' }}
+                            />
+                        </div>
                     </div>
 
-                    <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label>Evidence Photo</label>
+                    {/* Evidence Section */}
+                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                        <label>Evidence Capture</label>
                         <div
                             onClick={() => document.getElementById('fine-img').click()}
                             style={{
-                                height: 220, border: '1.5px dashed var(--border-active)',
-                                borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center',
-                                justifyContent: 'center', cursor: 'pointer', overflow: 'hidden',
-                                background: 'var(--bg-input)', transition: 'border-color 0.2s ease'
+                                height: 260, 
+                                border: '2px dashed var(--border)',
+                                borderRadius: 'var(--radius-lg)', 
+                                display: 'flex', 
+                                alignItems: 'center',
+                                justifyContent: 'center', 
+                                cursor: 'pointer', 
+                                overflow: 'hidden',
+                                background: 'var(--bg-main)', 
+                                transition: 'all 0.3s ease'
                             }}
-                            onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-                            onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-active)'}
+                            onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--accent)'}
+                            onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
                         >
                             {preview ? (
                                 <img src={preview} alt="Evidence" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             ) : (
-                                <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-                                    <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📷</div>
-                                    <p style={{ fontSize: '0.85rem' }}>Click to capture evidence</p>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem', opacity: 0.3 }}>📸</div>
+                                    <p style={{ fontWeight: 600 }}>Tap to Capture/Upload Evidence</p>
                                 </div>
                             )}
                             <input id="fine-img" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
                         </div>
                     </div>
 
-                    <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label>Location</label>
-                        <input type="text" name="location" value={form.location}
-                            onChange={handleChange} placeholder="Auto-detected or type manually" />
+                    <div className="form-group">
+                        <label>Location (Auto-detected)</label>
+                        <input 
+                            type="text" 
+                            name="location" 
+                            value={form.location}
+                            onChange={handleChange} 
+                            placeholder="Awaiting GPS location..." 
+                        />
                     </div>
 
                     {image && (
-                        <button type="button" className="btn btn-secondary" onClick={handleAnalyze} disabled={analyzing}>
-                            {analyzing ? 'Analyzing...' : '✦ Run AI Violation Scan'}
+                        <button 
+                            type="button" 
+                            className="btn btn-secondary" 
+                            onClick={handleAnalyze} 
+                            disabled={analyzing}
+                            style={{ width: 'fit-content', border: '1px solid var(--accent)', color: 'var(--accent)', marginBottom: '1.5rem' }}
+                        >
+                            {analyzing ? '✦ Running AI Scan...' : '✦ Run AI Violation Assistant'}
                         </button>
                     )}
 
-                    <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label>Violation Description</label>
-                        <textarea name="description" rows={4} placeholder="Describe the observed violation..." value={form.description}
-                            onChange={handleChange} required style={{ resize: 'vertical' }} />
+                    <div className="form-group" style={{ marginBottom: '2rem' }}>
+                        <label>Official Violation Summary</label>
+                        <textarea 
+                            name="description" 
+                            rows={4} 
+                            placeholder="Detailed description of the offense..." 
+                            value={form.description}
+                            onChange={handleChange} 
+                            required 
+                            style={{ resize: 'none', lineHeight: 1.6 }} 
+                        />
                     </div>
 
-                    <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label>Fine Amount (₹)</label>
-                        <input type="number" name="fineAmount" placeholder="e.g. 1000" value={form.fineAmount}
-                            onChange={handleChange} required min="1" />
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary" 
+                            style={{ flex: 1, padding: '1rem' }}
+                            disabled={submitting}
+                        >
+                            {submitting ? 'Recording Violation...' : 'Issue Official Challan'}
+                        </button>
+                        <button 
+                            type="button" 
+                            className="btn btn-secondary" 
+                            style={{ flex: 0.3 }}
+                            onClick={() => navigate('/dashboard')}
+                        >
+                            Cancel
+                        </button>
                     </div>
-
-                    {(form.vehicleNo || form.fineAmount) && (
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
-                            <span style={{ fontSize: '0.85rem', color: 'var(--text-sub)' }}>{form.vehicleNo || '—'}</span>
-                            {form.fineAmount && <span style={{ fontWeight: 700, fontSize: '1.2rem', color: 'var(--warning)' }}>₹{form.fineAmount}</span>}
-                        </div>
-                    )}
-
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
-                        {submitting ? 'Issuing...' : 'Issue Official Fine'}
-                    </button>
                 </div>
             </form>
         </div>

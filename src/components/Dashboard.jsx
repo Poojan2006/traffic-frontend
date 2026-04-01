@@ -33,140 +33,153 @@ const Dashboard = () => {
         load();
     }, []);
 
-    if (!user) return <div className="loading" style={{ height: '100vh' }}>Loading...</div>;
+    if (!user) return <div className="loading" style={{ height: 'calc(100vh - 100px)' }}>Loading Dashboard...</div>;
 
     const isPolice = user.role !== 'USER';
     const primaryAction = isPolice ? { label: 'Issue Fine', path: '/issue-fine' } : { label: 'Report Violation', path: '/report' };
 
     const getBadge = (pts) => {
         const p = pts || 0;
-        if (p >= 100) return { name: 'Gold Sentinel', icon: '🏆', color: '#ffb300' };
-        if (p >= 50) return { name: 'Silver Guardian', icon: '🥈', color: '#9e9e9e' };
-        if (p >= 20) return { name: 'Bronze Observer', icon: '🥉', color: '#cd7f32' };
-        return { name: 'Rookie Reporter', icon: '🎖️', color: 'var(--primary)' };
+        if (p >= 100) return { name: 'Gold Sentinel', icon: '🏆', color: '#fbbf24' };
+        if (p >= 50) return { name: 'Silver Guardian', icon: '🥈', color: '#94a3b8' };
+        if (p >= 20) return { name: 'Bronze Observer', icon: '🥉', color: '#d97706' };
+        return { name: 'Rookie Reporter', icon: '🎖️', color: 'var(--accent)' };
     };
 
     return (
-        <div style={{ animation: 'fadeIn 0.3s ease' }}>
-            {/* Header */}
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.7rem', fontWeight: 700, color: 'var(--text)' }}>
-                    Hello, {user.username} 👋
-                </h1>
-                <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                    {isPolice ? 'Traffic Enforcement Dashboard' : 'Civilian Reporting Dashboard'}
+        <div style={{ animation: 'fadeIn 0.4s ease' }}>
+            <div style={{ marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '1.875rem', fontWeight: 700 }}>Welcome back, {user.username}</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                    {isPolice ? 'Monitor and manage traffic enforcement efficiency.' : 'Track your reports and civic contribution points.'}
                 </p>
             </div>
 
-            {/* Stats */}
+            {/* Stats Overview */}
             <div className="stats-grid">
                 {[
-                    { label: 'Total', value: stats.total, color: 'var(--text)' },
-                    { label: 'Pending', value: stats.pending, color: 'var(--warning)' },
-                    { label: 'Verified', value: stats.verified, color: 'var(--success)' },
-                    { label: 'Paid', value: stats.paid, color: 'var(--primary)' },
+                    { label: 'Total Records', value: stats.total, icon: '📊', color: 'var(--text-primary)' },
+                    { label: 'Pending Review', value: stats.pending, icon: '⏳', color: 'var(--warning)' },
+                    { label: 'Verified Cases', value: stats.verified, icon: '✅', color: 'var(--success)' },
+                    { label: 'Settled Fines', value: stats.paid, icon: '💳', color: 'var(--accent)' },
                 ].map(s => (
-                    <div key={s.label} className="glass-card stat-card">
+                    <div key={s.label} className="card stat-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                            <span style={{ fontSize: '1.5rem' }}>{s.icon}</span>
+                            <span style={{ color: s.color, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Live</span>
+                        </div>
                         <span className="stat-value" style={{ color: s.color }}>{s.value}</span>
                         <span className="stat-label">{s.label}</span>
                     </div>
                 ))}
             </div>
 
-            {/* Content grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '1.5rem', alignItems: 'start' }}>
-
-                {/* Recent violations */}
-                <div className="glass-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text)' }}>
-                            {isPolice ? 'Pending Validations' : 'My Recent Reports'}
-                        </h3>
-                        {isPolice && (
-                            <button className="btn btn-secondary" style={{ padding: '0.4rem 0.9rem', fontSize: '0.8rem' }} onClick={() => navigate('/verify-reports')}>
-                                View All
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem', alignItems: 'start' }}>
+                
+                {/* Left Column: Recent Activity & Map */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    
+                    {/* Activity Feed */}
+                    <div className="card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                            <h3 style={{ fontSize: '1.125rem' }}>{isPolice ? 'Validation Queue' : 'My Recent Reports'}</h3>
+                            <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8125rem' }} onClick={() => navigate(isPolice ? '/verify-reports' : '/my-violations')}>
+                                View All Activity
                             </button>
+                        </div>
+
+                        {violationList.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--text-muted)' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.2 }}>📁</div>
+                                <p>No recent activity found on your account.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {violationList.slice(0, 5).map(v => (
+                                    <div key={v.id} style={{ 
+                                        display: 'flex', alignItems: 'center', gap: '1.25rem', 
+                                        padding: '1rem', background: 'rgba(255,255,255,0.02)', 
+                                        borderRadius: 'var(--radius-md)', border: '1px solid var(--border)',
+                                        transition: 'all 0.2s', cursor: 'pointer'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--border-hover)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
+                                    >
+                                        <div style={{ width: 56, height: 56, borderRadius: 'var(--radius-sm)', overflow: 'hidden', flexShrink: 0, background: 'var(--bg-main)' }}>
+                                            <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="evidence" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                                        </div>
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                            <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{v.description}</div>
+                                            <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+                                                {v.vehicleNo && <span style={{ marginRight: '1rem' }}>🚗 {v.vehicleNo}</span>}
+                                                <span>📅 {new Date(v.createdAt).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
+                                        <span className={`badge badge-${v.status.toLowerCase()}`}>{v.status}</span>
+                                    </div>
+                                ))}
+                            </div>
                         )}
                     </div>
 
-                    {violationList.length === 0 ? (
-                        <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                            No records found.
+                    {/* Geospatial View */}
+                    <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                        <div style={{ padding: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', marginBottom: '0.25rem' }}>Geospatial Analytics</h3>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Live heatmap showing reported violations across the operational area.</p>
                         </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            {violationList.slice(0, 5).map(v => (
-                                <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.85rem', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
-                                    <div style={{ width: 48, height: 48, borderRadius: 6, overflow: 'hidden', flexShrink: 0, background: 'var(--bg)' }}>
-                                        <img src={`${API.defaults.baseURL}/violations/image/${v.id}`} alt="evidence" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </div>
-                                    <div style={{ flex: 1, minWidth: 0 }}>
-                                        <div style={{ fontSize: '0.88rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text)' }}>{v.description}</div>
-                                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                                            {v.vehicleNo ? `🚗 ${v.vehicleNo} · ` : ''}{new Date(v.createdAt).toLocaleDateString()}
-                                        </div>
-                                    </div>
-                                    <span className={`status-badge ${v.status.toLowerCase()}`}>{v.status}</span>
-                                </div>
-                            ))}
+                        <div style={{ height: '340px', background: 'var(--bg-main)' }}>
+                            <AnalyticsMap violations={violationList} />
                         </div>
-                    )}
+                    </div>
                 </div>
 
-                {/* Quick Actions & Badges */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* Right Column: Profile & Actions */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    
+                    {/* Rank Card (Civilian Only) */}
                     {!isPolice && (
-                        <div className="glass-card" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <div style={{ fontSize: '2.5rem' }}>{getBadge(user.points).icon}</div>
-                            <div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-sub)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Civic Rank</div>
-                                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: getBadge(user.points).color }}>{getBadge(user.points).name}</div>
-                                <div style={{ fontSize: '0.85rem', color: 'var(--text)', marginTop: '0.25rem' }}>
-                                    <span style={{ fontWeight: 700 }}>{user.points || 0}</span> / 100 XP
+                        <div className="card glass" style={{ borderLeft: '4px solid var(--accent)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                                <div style={{ fontSize: '3rem' }}>{getBadge(user.points).icon}</div>
+                                <div>
+                                    <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Current Rank</div>
+                                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: getBadge(user.points).color }}>{getBadge(user.points).name}</div>
+                                    <div style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                                        <span style={{ fontWeight: 700 }}>{user.points || 0}</span> / 100 XP
+                                    </div>
                                 </div>
+                            </div>
+                            <div style={{ marginTop: '1.25rem', height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
+                                <div style={{ width: `${Math.min(user.points || 0, 100)}%`, height: '100%', background: 'var(--accent)', boxShadow: '0 0 10px var(--accent)' }} />
                             </div>
                         </div>
                     )}
 
-                    <div className="glass-card">
-                        <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text)' }}>Quick Actions</h3>
-                        <button className="btn btn-primary" style={{ width: '100%', marginBottom: '0.75rem' }} onClick={() => navigate(primaryAction.path)}>
-                            {primaryAction.label}
-                        </button>
-                        {!isPolice && (
-                            <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => navigate('/check-challan')}>
-                                Check Challan
+                    {/* Quick Launch */}
+                    <div className="card">
+                        <h3 style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>Quick Launch</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                            <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => navigate(primaryAction.path)}>
+                                {primaryAction.label}
                             </button>
-                        )}
-                        {isPolice && (
-                            <>
-                                <button className="btn btn-secondary" style={{ width: '100%', marginBottom: '0.75rem' }} onClick={() => navigate('/verify-reports')}>
-                                    Verify Reports
-                                </button>
+                            <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => navigate(isPolice ? '/verify-reports' : '/check-challan')}>
+                                {isPolice ? 'Verify Pending Reports' : 'Check Active Challans'}
+                            </button>
+                            {isPolice && (
                                 <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => navigate('/my-violations')}>
-                                    My Issued Fines
+                                    History of Issued Fines
                                 </button>
-                            </>
-                        )}
-                    </div>
-
-                    <div className="glass-card" style={{ padding: '1.25rem' }}>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>AI POWERED</div>
-                        <p style={{ fontSize: '0.82rem', color: 'var(--text-sub)', lineHeight: 1.6 }}>
-                            Upload evidence photos to get AI-powered violation analysis and recommended challan amounts.
-                        </p>
-                    </div>
-
-                    <div className="glass-card" style={{ padding: 0 }}>
-                        <div style={{ padding: '1rem' }}>
-                            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text)' }}>
-                                {isPolice ? 'Violation Heatmap' : 'My Reporting Heatmap'}
-                            </h3>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>
-                                {isPolice ? 'Geospatial concentration of offenses.' : 'Geospatial view of your submitted reports.'}
-                            </p>
+                            )}
                         </div>
-                        <AnalyticsMap violations={violationList} />
+                    </div>
+
+                    {/* Feature Highlight */}
+                    <div className="card" style={{ background: 'var(--accent-soft)', borderColor: 'rgba(59, 130, 246, 0.2)' }}>
+                        <div style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.75rem' }}>AI Insight</div>
+                        <p style={{ fontSize: '0.875rem', lineHeight: 1.6, color: 'var(--text-primary)' }}>
+                            Our <strong>AI Analysis Engine</strong> automatically detects vehicle plates and classifies violations from your photos for faster processing.
+                        </p>
                     </div>
                 </div>
             </div>
